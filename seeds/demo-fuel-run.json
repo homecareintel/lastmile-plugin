@@ -1,0 +1,152 @@
+{
+	"$comment": "Demo seed scenario for /lm-setup's activation test run (TEI-39 R9). Tiny by design: 4 geocoded Austin-area fuel orders, 1 shift, 1 terminal \u2014 keeps HERE/solver spend per activation small. Loaded via dispatch_load_scenario with idempotency_name so repeat activations reuse one row. Start with a low max_run_time_ms (the skill passes it).",
+	"idempotency_name": "seed:demo-fuel-run",
+	"schedule_date": "2026-07-10",
+	"orders": [
+		{
+			"id": "seed-ord-1",
+			"pickup_location_id": "seed-term-1",
+			"ship_to": {
+				"id": "seed-ship-1",
+				"name": "Demo Stop \u2014 Congress Ave",
+				"location": {
+					"geo_lat": 30.2747,
+					"geo_lon": -97.7404
+				}
+			},
+			"order_items": [
+				{
+					"product_id": "diesel",
+					"quantity": 400
+				}
+			],
+			"ship_to_id": "seed-ship-1",
+			"time_window_start_ts": "2026-07-10T13:00:00Z",
+			"time_window_end_ts": "2026-07-10T23:00:00Z"
+		},
+		{
+			"id": "seed-ord-2",
+			"pickup_location_id": "seed-term-1",
+			"ship_to": {
+				"id": "seed-ship-2",
+				"name": "Demo Stop \u2014 Mueller",
+				"location": {
+					"geo_lat": 30.2986,
+					"geo_lon": -97.7047
+				}
+			},
+			"order_items": [
+				{
+					"product_id": "diesel",
+					"quantity": 350
+				}
+			],
+			"ship_to_id": "seed-ship-2",
+			"time_window_start_ts": "2026-07-10T13:00:00Z",
+			"time_window_end_ts": "2026-07-10T23:00:00Z"
+		},
+		{
+			"id": "seed-ord-3",
+			"pickup_location_id": "seed-term-1",
+			"ship_to": {
+				"id": "seed-ship-3",
+				"name": "Demo Stop \u2014 Zilker",
+				"location": {
+					"geo_lat": 30.2669,
+					"geo_lon": -97.7729
+				}
+			},
+			"order_items": [
+				{
+					"product_id": "unleaded",
+					"quantity": 300
+				}
+			],
+			"ship_to_id": "seed-ship-3",
+			"time_window_start_ts": "2026-07-10T13:00:00Z",
+			"time_window_end_ts": "2026-07-10T23:00:00Z"
+		},
+		{
+			"id": "seed-ord-4",
+			"pickup_location_id": "seed-term-1",
+			"ship_to": {
+				"id": "seed-ship-4",
+				"name": "Demo Stop \u2014 Domain",
+				"location": {
+					"geo_lat": 30.4021,
+					"geo_lon": -97.7259
+				}
+			},
+			"order_items": [
+				{
+					"product_id": "unleaded",
+					"quantity": 250
+				}
+			],
+			"ship_to_id": "seed-ship-4",
+			"time_window_start_ts": "2026-07-10T13:00:00Z",
+			"time_window_end_ts": "2026-07-10T23:00:00Z"
+		}
+	],
+	"shifts": [
+		{
+			"id": "seed-shift-1",
+			"resource": {
+				"id": "seed-res-1",
+				"first_name": "Demo",
+				"last_name": "Driver"
+			},
+			"schedule_date": "2026-07-10",
+			"available": true,
+			"vehicle": {
+				"id": "seed-veh-1",
+				"name": "Demo Bobtail",
+				"tanks": {
+					"tanks": [
+						{
+							"size": 2000
+						},
+						{
+							"size": 1500
+						}
+					]
+				}
+			},
+			"vehicle_id": "seed-veh-1",
+			"start_time": "07:00",
+			"end_time": "17:00",
+			"start_location": {
+				"id": "seed-term-1",
+				"location": {
+					"geo_lat": 30.2107,
+					"geo_lon": -97.7654
+				}
+			},
+			"end_location": {
+				"id": "seed-term-1",
+				"location": {
+					"geo_lat": 30.2107,
+					"geo_lon": -97.7654
+				}
+			}
+		}
+	],
+	"depots": [
+		{
+			"id": "seed-term-1",
+			"name": "Demo Terminal \u2014 South Austin",
+			"location": {
+				"geo_lat": 30.2107,
+				"geo_lon": -97.7654
+			},
+			"terminal_products": [
+				{
+					"product_id": "diesel"
+				},
+				{
+					"product_id": "unleaded"
+				}
+			]
+		}
+	]
+}
