@@ -1,4 +1,4 @@
-<!-- GENERATED FILE — do not edit. Source of truth: web-apps/tools/lastmile-plugin (TEI-39). Release: v0.1.0. -->
+<!-- GENERATED FILE — do not edit. Source of truth: web-apps/tools/lastmile-plugin (TEI-39). Release: v0.1.1. -->
 
 # LastMile Plugin
 
@@ -52,6 +52,6 @@ grant per server (`/mcp` on Claude, `codex mcp login` on Codex).
 ## Install only from tagged releases
 
 This repo is a generated build artifact, published append-only with
-protected tags. Install from a tagged release (v0.1.0 is current); never
+protected tags. Install from a tagged release (v0.1.1 is current); never
 from a branch ref. Hand edits here are overwritten by the next release —
 the source of truth lives in the LastMile monorepo.

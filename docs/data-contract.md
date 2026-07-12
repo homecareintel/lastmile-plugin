@@ -1,4 +1,4 @@
-<!-- GENERATED FILE — do not edit. Source of truth: web-apps/tools/lastmile-plugin (TEI-39). Release: v0.1.0. -->
+<!-- GENERATED FILE — do not edit. Source of truth: web-apps/tools/lastmile-plugin (TEI-39). Release: v0.1.1. -->
 
 # /lm-data input contract
 
@@ -16,7 +16,7 @@ your columns.
 | id | `id` or `order_header_id` |
 | pickup terminal | `pickup_location_id` (or `pickup_location_ids` array) — must match a depot id |
 | ship-to | `ship_to: { name, location }` |
-| coordinates | inside `ship_to.location`: `geo_lat` / `lat` / `latitude` + `geo_lon` / `lng` / `longitude` |
+| coordinates | **must be nested inside `ship_to.location`** (top-level `ship_to.lat` is ignored): `geo_lat` / `lat` / `latitude` + `geo_lon` / `lng` / `longitude` |
 | address (if no coordinates) | `address1` / `address` / `full_address` / `street`, plus `city`, `state`, `postal_code` / `postalCode` / `zip` — resolve via `/lm-geocode` |
 | items | `order_items: [{ product_id, quantity }]` — must be non-empty |
 

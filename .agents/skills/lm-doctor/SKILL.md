@@ -4,7 +4,7 @@ description: Diagnose LastMile plugin connection and auth failures. Walks the un
 argument-hint: "[the error you hit, or nothing to run a full check]"
 ---
 
-<!-- GENERATED FILE — do not edit. Source of truth: web-apps/tools/lastmile-plugin (TEI-39). Release: v0.1.0. -->
+<!-- GENERATED FILE — do not edit. Source of truth: web-apps/tools/lastmile-plugin (TEI-39). Release: v0.1.1. -->
 
 
 # /lm-doctor — connection diagnostics

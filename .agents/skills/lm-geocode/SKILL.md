@@ -4,7 +4,7 @@ description: Resolve missing or bad delivery coordinates in bulk — the remedia
 argument-hint: "[orders/addresses to geocode]"
 ---
 
-<!-- GENERATED FILE — do not edit. Source of truth: web-apps/tools/lastmile-plugin (TEI-39). Release: v0.1.0. -->
+<!-- GENERATED FILE — do not edit. Source of truth: web-apps/tools/lastmile-plugin (TEI-39). Release: v0.1.1. -->
 
 
 # /lm-geocode — coordinate remediation
@@ -37,9 +37,15 @@ Per-ref results come back in input order:
 
 ## Apply the fixes
 
-- **Scenario-sourced orders:** patch the entity arrays (set
-  `ship_to.location.geo_lat` / `geo_lon`) and re-run the /lm-data
-  validate → load cycle.
+- **Scenario-sourced orders:** patch the entity arrays and re-run the
+  /lm-data validate → load cycle. The coordinates MUST go inside
+  `ship_to.location` — `ship_to.lat` / `ship_to.latitude` at the top level
+  are ignored by the normalizer and the gap will not clear:
+
+  ```json
+  { "id": "ORD-1",
+    "ship_to": { "name": "...", "location": { "geo_lat": 30.2755, "geo_lon": -97.7404 } } }
+  ```
 - **Real LastMile orders:** write back to the source record via
   data-catalog `ship_tos_update` so the gap stays fixed — but ONLY after
   showing the user each ship-to and the exact coordinates to be written

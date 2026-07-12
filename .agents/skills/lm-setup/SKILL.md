@@ -4,7 +4,7 @@ description: Activate the LastMile plugin end-to-end — configure the server en
 argument-hint: "[stage: production|staging|develop, default production]"
 ---
 
-<!-- GENERATED FILE — do not edit. Source of truth: web-apps/tools/lastmile-plugin (TEI-39). Release: v0.1.0. -->
+<!-- GENERATED FILE — do not edit. Source of truth: web-apps/tools/lastmile-plugin (TEI-39). Release: v0.1.1. -->
 
 
 # /lm-setup — activation and health check

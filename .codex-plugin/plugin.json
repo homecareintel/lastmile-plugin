@@ -1,6 +1,6 @@
 {
 	"name": "lastmile",
-	"version": "0.1.0",
+	"version": "0.1.1",
 	"description": "LastMile dispatch optimization for AI agents — /lm-optimization, /lm-data, /lm-geocode, /lm-setup, /lm-doctor over the LastMile MCP servers.",
 	"mcpServers": "./.mcp.json"
 }

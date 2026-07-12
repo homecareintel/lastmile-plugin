@@ -4,7 +4,7 @@ description: Bring optimization data into LastMile from any source — a LastMil
 argument-hint: "[source: sheet/doc/paste/LastMile] or a gap to fix"
 ---
 
-<!-- GENERATED FILE — do not edit. Source of truth: web-apps/tools/lastmile-plugin (TEI-39). Release: v0.1.0. -->
+<!-- GENERATED FILE — do not edit. Source of truth: web-apps/tools/lastmile-plugin (TEI-39). Release: v0.1.1. -->
 
 
 # /lm-data — data ingestion and fixes
@@ -20,7 +20,8 @@ Entity arrays: `orders`, `shifts`, `depots`. The server's normalizers are
 tolerant of common field-name variants:
 
 - **Coordinates:** `geo_lat` / `lat` / `latitude` (+ matching longitude
-  variants), nested under `ship_to.location` for orders.
+  variants) — for orders these MUST be nested under `ship_to.location`
+  (`ship_to.location.geo_lat`). Top-level `ship_to.lat` is ignored.
 - **Addresses:** `address1` / `address` / `full_address` / `street`, plus
   `city`, `state`, `postal_code` / `postalCode` / `zip`.
 - **Orders** need: an id, a pickup terminal (`pickup_location_id`), a
