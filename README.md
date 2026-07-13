@@ -1,4 +1,4 @@
-<!-- GENERATED FILE — do not edit. Source of truth: web-apps/tools/lastmile-plugin (TEI-39). Release: v0.1.2. -->
+<!-- GENERATED FILE — do not edit. Source of truth: web-apps/tools/lastmile-plugin (TEI-39). Release: v0.1.3-dev. -->
 
 # LastMile Plugin
 
@@ -44,7 +44,7 @@ running a tiny bundled demo optimization to a live result.
 
 ## Servers
 
-The plugin bundles two OAuth-protected MCP servers (`https://mcp.lastmile-tei.com`):
+The plugin bundles two OAuth-protected MCP servers (`https://mcp-dev.lastmile-tei.com`):
 `lastmile-dispatch` (optimization) and `lastmile-data-catalog` (the
 narrow write path for geocode fixes). Sign-in is one interactive OAuth
 grant per server (`/mcp` on Claude, `codex mcp login` on Codex).
@@ -52,6 +52,6 @@ grant per server (`/mcp` on Claude, `codex mcp login` on Codex).
 ## Install only from tagged releases
 
 This repo is a generated build artifact, published append-only with
-protected tags. Install from a tagged release (v0.1.2 is current); never
+protected tags. Install from a tagged release (v0.1.3-dev is current); never
 from a branch ref. Hand edits here are overwritten by the next release —
 the source of truth lives in the LastMile monorepo.

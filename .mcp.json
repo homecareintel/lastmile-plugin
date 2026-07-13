@@ -2,11 +2,11 @@
 	"mcpServers": {
 		"lastmile-dispatch": {
 			"type": "http",
-			"url": "https://mcp.lastmile-tei.com/dispatch"
+			"url": "https://mcp-dev.lastmile-tei.com/dispatch"
 		},
 		"lastmile-data-catalog": {
 			"type": "http",
-			"url": "https://mcp.lastmile-tei.com/data-catalog"
+			"url": "https://mcp-dev.lastmile-tei.com/data-catalog"
 		}
 	}
 }

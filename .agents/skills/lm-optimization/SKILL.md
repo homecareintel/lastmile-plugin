@@ -4,7 +4,7 @@ description: Run a LastMile dispatch optimization from a natural-language reques
 argument-hint: "[date] [unit/department/service area] — or point at a sheet/doc"
 ---
 
-<!-- GENERATED FILE — do not edit. Source of truth: web-apps/tools/lastmile-plugin (TEI-39). Release: v0.1.2. -->
+<!-- GENERATED FILE — do not edit. Source of truth: web-apps/tools/lastmile-plugin (TEI-39). Release: v0.1.3-dev. -->
 
 
 # /lm-optimization — run a dispatch optimization

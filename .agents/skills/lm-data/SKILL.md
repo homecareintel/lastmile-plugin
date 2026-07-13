@@ -4,7 +4,7 @@ description: Bring optimization data into LastMile from any source — a LastMil
 argument-hint: "[source: sheet/doc/paste/LastMile] or a gap to fix"
 ---
 
-<!-- GENERATED FILE — do not edit. Source of truth: web-apps/tools/lastmile-plugin (TEI-39). Release: v0.1.2. -->
+<!-- GENERATED FILE — do not edit. Source of truth: web-apps/tools/lastmile-plugin (TEI-39). Release: v0.1.3-dev. -->
 
 
 # /lm-data — data ingestion and fixes
@@ -75,7 +75,7 @@ they stay fixed:
 The plugin ships `seeds/demo-fuel-run.json`. If the file isn't on the
 host filesystem (some hosts, like the Claude desktop app, install only
 the skill files), fetch it from
-`https://raw.githubusercontent.com/homecareintel/lastmile-plugin/v0.1.2/seeds/demo-fuel-run.json`.
+`https://raw.githubusercontent.com/homecareintel/lastmile-plugin/v0.1.3-dev/seeds/demo-fuel-run.json`.
 Load it with
 `idempotency_name: "seed:demo-fuel-run"` — repeat loads reuse the same
 row (`reused: true`) or refresh it in place (`updated: true`); the

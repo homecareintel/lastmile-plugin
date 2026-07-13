@@ -4,7 +4,7 @@ description: Activate the LastMile plugin end-to-end — configure the server en
 argument-hint: "[stage: production|staging|develop, default production]"
 ---
 
-<!-- GENERATED FILE — do not edit. Source of truth: web-apps/tools/lastmile-plugin (TEI-39). Release: v0.1.2. -->
+<!-- GENERATED FILE — do not edit. Source of truth: web-apps/tools/lastmile-plugin (TEI-39). Release: v0.1.3-dev. -->
 
 
 # /lm-setup — activation and health check
@@ -54,7 +54,7 @@ path from the README.
    Some hosts install only the skill files, not the plugin's `seeds/`
    directory (the Claude desktop app does this). If the seed file isn't
    readable locally, fetch it from the release it shipped with:
-   `https://raw.githubusercontent.com/homecareintel/lastmile-plugin/v0.1.2/seeds/demo-fuel-run.json`
+   `https://raw.githubusercontent.com/homecareintel/lastmile-plugin/v0.1.3-dev/seeds/demo-fuel-run.json`
    — never invent stand-in entities; a made-up scenario defeats the test
    transaction.
 2. Confirm with the user, then `dispatch_start_optimization` with the
