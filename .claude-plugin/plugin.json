@@ -1,6 +1,7 @@
 {
 	"name": "lastmile",
-	"version": "0.1.1",
+	"displayName": "LastMile Intelligence",
+	"version": "0.1.2",
 	"description": "LastMile dispatch optimization for AI agents — /lm-optimization, /lm-data, /lm-geocode, /lm-setup, /lm-doctor over the LastMile MCP servers.",
 	"author": {
 		"name": "LastMile Intelligence (homecareintel)"

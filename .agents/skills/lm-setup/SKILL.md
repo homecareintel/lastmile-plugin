@@ -4,7 +4,7 @@ description: Activate the LastMile plugin end-to-end — configure the server en
 argument-hint: "[stage: production|staging|develop, default production]"
 ---
 
-<!-- GENERATED FILE — do not edit. Source of truth: web-apps/tools/lastmile-plugin (TEI-39). Release: v0.1.1. -->
+<!-- GENERATED FILE — do not edit. Source of truth: web-apps/tools/lastmile-plugin (TEI-39). Release: v0.1.2. -->
 
 
 # /lm-setup — activation and health check
@@ -50,6 +50,12 @@ path from the README.
    `seeds/demo-fuel-run.json` and
    `idempotency_name: "seed:demo-fuel-run"` — repeat activations reuse or
    refresh one row, never accumulate.
+   Some hosts install only the skill files, not the plugin's `seeds/`
+   directory (the Claude desktop app does this). If the seed file isn't
+   readable locally, fetch it from the release it shipped with:
+   `https://raw.githubusercontent.com/homecareintel/lastmile-plugin/v0.1.2/seeds/demo-fuel-run.json`
+   — never invent stand-in entities; a made-up scenario defeats the test
+   transaction.
 2. Confirm with the user, then `dispatch_start_optimization` with the
    returned `scenario_id` and a low solver budget (`max_run_time_ms` ≈
    30000) — this is a real solve on the real solver; the seed is tiny to
@@ -65,11 +71,15 @@ path from the README.
 ## Step 5 — tool allowlist (recommended)
 
 So progress polling and the narrow write path don't prompt on every call,
-suggest allowlisting exactly: `dispatch_get_live_solution`,
-`dispatch_get_optimization` (read-only status), and — only if the user
-wants geocode write-back — data-catalog `ship_tos_update` (this one is
-better left prompting). Never suggest blanket-allowlisting the
-data-catalog server; it exposes 40 tools including deletes.
+suggest allowlisting exactly the read-only status tools:
+`dispatch_get_live_solution`, `dispatch_get_results`, and
+`dispatch_get_optimization`. On the Claude desktop app these surface as
+per-tool "Always allow" prompts mid-run — a live run polls every few
+seconds, so "Allow once" stalls it; recommend "Always allow" for these
+three (and only these). Leave `dispatch_load_scenario` and
+data-catalog `ship_tos_update` prompting — they write. Never suggest
+blanket-allowlisting the data-catalog server; it exposes 40 tools
+including deletes.
 
 ## Re-run behavior
 

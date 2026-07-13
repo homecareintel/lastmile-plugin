@@ -5,14 +5,15 @@
 	},
 	"metadata": {
 		"description": "LastMile plugin marketplace — dispatch optimization skill pack (sibling packs land here later without breaking installs).",
-		"version": "0.1.1"
+		"version": "0.1.2"
 	},
 	"plugins": [
 		{
 			"name": "lastmile",
+			"displayName": "LastMile Intelligence",
 			"description": "LastMile dispatch optimization for AI agents — /lm-optimization, /lm-data, /lm-geocode, /lm-setup, /lm-doctor over the LastMile MCP servers.",
 			"source": "./",
-			"tag": "v0.1.1"
+			"tag": "v0.1.2"
 		}
 	]
 }

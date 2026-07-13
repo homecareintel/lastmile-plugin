@@ -4,7 +4,7 @@ description: Resolve missing or bad delivery coordinates in bulk — the remedia
 argument-hint: "[orders/addresses to geocode]"
 ---
 
-<!-- GENERATED FILE — do not edit. Source of truth: web-apps/tools/lastmile-plugin (TEI-39). Release: v0.1.1. -->
+<!-- GENERATED FILE — do not edit. Source of truth: web-apps/tools/lastmile-plugin (TEI-39). Release: v0.1.2. -->
 
 
 # /lm-geocode — coordinate remediation
