@@ -12,8 +12,11 @@
 			"name": "lastmile",
 			"displayName": "LastMile Intelligence",
 			"description": "LastMile dispatch optimization for AI agents — /lm-optimization, /lm-data, /lm-geocode, /lm-setup, /lm-doctor over the LastMile MCP servers.",
-			"source": "./",
-			"tag": "v0.1.3-dev"
+			"source": {
+				"source": "url",
+				"url": "https://github.com/homecareintel/lastmile-plugin.git",
+				"ref": "v0.1.3-dev"
+			}
 		}
 	]
 }

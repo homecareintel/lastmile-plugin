@@ -1,12 +1,12 @@
 {
 	"mcpServers": {
-		"lastmile-dispatch": {
+		"route-optimization": {
 			"type": "http",
-			"url": "https://mcp-dev.lastmile-tei.com/dispatch"
-		},
-		"lastmile-data-catalog": {
-			"type": "http",
-			"url": "https://mcp-dev.lastmile-tei.com/data-catalog"
+			"url": "https://mcp.routing.thinkwork.ai/mcp",
+			"oauth": {
+				"callbackPort": 31873,
+				"scopes": "openid https://mcp.routing.thinkwork.ai/mcp/tools"
+			}
 		}
 	}
 }

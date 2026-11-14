@@ -1,0 +1,16 @@
+spring:
+  application:
+    name: example
+  ai:
+    mcp:
+      server:
+        name: example-mcp
+        instructions: >-
+          Synthetic instructions. Call describe_widgets first,
+          then count_gadgets.
+
+          Never deliver without asking.
+        streamable-http:
+          mcp-endpoint: /mcp
+server:
+  port: 8080

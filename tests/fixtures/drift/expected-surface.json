@@ -1,0 +1,52 @@
+{
+  "source": {
+    "repo": "homecareintel/routeoptimization-agent",
+    "commit": "fixture-base"
+  },
+  "tools": [
+    {
+      "name": "count_gadgets",
+      "title": "Count gadgets",
+      "hints": { "readOnly": true, "destructive": false, "idempotent": true, "openWorld": false },
+      "args": ["bin_id", "kind", "limit"],
+      "required": ["bin_id", "kind"]
+    },
+    {
+      "name": "deliver_run",
+      "title": "Deliver a run",
+      "hints": { "readOnly": false, "destructive": true, "idempotent": false, "openWorld": true },
+      "args": ["result_id", "run_id"],
+      "required": ["run_id"]
+    },
+    {
+      "name": "describe_widgets",
+      "title": "Describe widgets",
+      "hints": { "readOnly": true, "destructive": false, "idempotent": true, "openWorld": false },
+      "args": ["mode", "offset"],
+      "required": ["mode"]
+    },
+    {
+      "name": "map_gadgets",
+      "title": "Map gadget columns",
+      "hints": { "readOnly": false, "destructive": false, "idempotent": true, "openWorld": true },
+      "args": ["bin_id", "mapping", "note"],
+      "required": ["bin_id", "mapping"]
+    }
+  ],
+  "prompts": ["domain-checklist-alpha-care", "domain-checklist-beta-fuel"],
+  "errorCodes": ["GADGET_NOT_DELIVERABLE", "GADGET_NOT_FOUND", "INTERNAL_ERROR", "INVALID_ARGUMENT", "INVALID_GADGET_ID"],
+  "statuses": {
+    "runStatuses": ["BROKEN", "BUSY", "DONE", "WAITING"],
+    "proposalStatuses": ["APPROVED", "PENDING", "SUPERSEDED"],
+    "compileProfileStates": ["EMPTY_DEFAULT", "SIGNED_OFF"],
+    "runFailureCodes": ["LOST", "STOPPED"]
+  },
+  "checklistDomains": ["alpha-care", "beta-fuel"],
+  "contentHashes": {
+    "checklists": {
+      "alpha-care.md": "sha256:8e864080a0d773c66a9fac209e6cc7358f70be1d9a88155225aa4dbb8e37b681",
+      "beta-fuel.md": "sha256:1cf60fff2b20ceb80824266fda7afe5765db4b945983aebff43db72bac390c0f"
+    },
+    "serverInstructions": "sha256:a0e293655e1bef5d6ac6f8f5f424b079444e37f313a9d8d3b1f0d9ae625fb87e"
+  }
+}

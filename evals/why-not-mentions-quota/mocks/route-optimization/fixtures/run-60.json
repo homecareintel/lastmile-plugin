@@ -1,0 +1,22 @@
+{
+  "summary": "Run run-60 COMPLETE: forcing J-5 onto V-3 costs +62.40.",
+  "untrusted": true,
+  "untrustedFields": [
+    "whyNot.jobId",
+    "whyNot.vehicleId"
+  ],
+  "runId": "run-60",
+  "kind": "WHY_NOT",
+  "status": "COMPLETE",
+  "whyNot": {
+    "baseRunId": "run-42",
+    "jobId": "J-5",
+    "vehicleId": "V-3",
+    "costDelta": 62.4,
+    "displaced": [
+      "J-31"
+    ],
+    "newlyUnassigned": [],
+    "lostSlackMinutes": 18
+  }
+}
