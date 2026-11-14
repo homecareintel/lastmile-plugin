@@ -4,7 +4,7 @@ This is the brief for the weekly Factory task that keeps the skills in step with
 
 ## What the check compares
 
-`npm run drift` runs `scripts/drift/snapshot.mjs`. It finds the commit of the latest successful `prod` deployment of `homecareintel/routeoptimization-agent` on GitHub, and reads the service source at that commit through `gh api`. From the source it builds a snapshot:
+`npm run drift` runs `scripts/drift/snapshot.mjs`. It finds the commit of the latest successful `prod` deployment of `homecareintel/routeoptimization-agent` on GitHub that the MCP server's apply job made (the service deploys other apps to `prod` too, and those deployments are skipped), and reads the service source at that commit through `gh api`. From the source it builds a snapshot:
 
 - each tool's name, title, the four hints (read-only, destructive, idempotent, open-world), argument names and required arguments
 - the checklist prompt names and the checklist domains

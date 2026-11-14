@@ -1,8 +1,8 @@
 #!/usr/bin/env node
 // Snapshot of the Route Optimization service surface the skills rely on, and a diff against the committed baseline.
 //
-// It reads routeoptimization-agent at the commit of its latest successful prod deployment, through `gh api` and the
-// GitHub access this host already has. It contacts nothing but GitHub and never the live service.
+// It reads routeoptimization-agent at the commit of its latest successful prod MCP server deployment, through
+// `gh api` and the GitHub access this host already has. It contacts nothing but GitHub and never the live service.
 //
 //   node scripts/drift/snapshot.mjs            markdown drift report; exit 0 no drift, 1 drift, 2 parse failure
 //   node scripts/drift/snapshot.mjs --write    refresh drift/service-surface.json
@@ -89,15 +89,28 @@ function gh(args) {
   }
 }
 
-/** The commit of the newest prod deployment whose latest status is success. */
-function prodCommit(repo) {
-  const deployments = JSON.parse(gh([`repos/${repo}/deployments?environment=prod&per_page=100`]) ?? '[]')
+// The service's deploy workflow applies more than one app to the prod environment, and every apply job records a
+// prod deployment. Only a deployment made by the job that applies the MCP server names the commit prod serves.
+const MCP_DEPLOY_JOB = /\bApply mcp \(prod\)$/;
+
+/**
+ * The commit of the newest prod deployment whose latest status is success and whose Actions job applied the MCP
+ * server. `api(args)` returns the `gh api` response body, or null on 404.
+ */
+export function prodCommit(repo, api = gh) {
+  const deployments = JSON.parse(api([`repos/${repo}/deployments?environment=prod&per_page=100`]) ?? '[]')
     .sort((a, b) => b.created_at.localeCompare(a.created_at));
   for (const d of deployments) {
-    const [latest] = JSON.parse(gh([`repos/${repo}/deployments/${d.id}/statuses?per_page=1`]) ?? '[]');
-    if (latest?.state === 'success') return d.sha;
+    const [latest] = JSON.parse(api([`repos/${repo}/deployments/${d.id}/statuses?per_page=1`]) ?? '[]');
+    if (latest?.state !== 'success') continue;
+    const jobId = /\/actions\/runs\/\d+\/job\/(\d+)/.exec(latest.log_url || latest.target_url || '')?.[1];
+    const job = jobId ? JSON.parse(api([`repos/${repo}/actions/jobs/${jobId}`]) ?? 'null') : null;
+    if (!job?.name) {
+      throw new Error(`cannot tell which app successful prod deployment ${d.id} of ${repo} applied: its Actions job is not readable`);
+    }
+    if (MCP_DEPLOY_JOB.test(job.name)) return d.sha;
   }
-  throw new Error(`no successful prod deployment among the newest ${deployments.length} deployments of ${repo}`);
+  throw new Error(`no successful MCP server deployment among the newest ${deployments.length} prod deployments of ${repo}`);
 }
 
 /** Reads the service repo through `gh api` at its prod-deployed commit. */
@@ -331,11 +344,17 @@ function enumConstants(file, code, name, problems) {
   return names.sort();
 }
 
-/** The values of `static final String ERROR_X = "..."` constants. */
+/** The values of `String ERROR_X = "..."` constants; any initializer other than string literals is a problem. */
 function failureCodes(code, problems) {
-  const re = /\b(?:static\s+final|final\s+static)\s+String\s+ERROR_\w+\s*=\s*("(?:[^"\\\n]|\\.)*")\s*;/g;
-  const out = [...code.matchAll(re)].map((m) => unescapeJava(m[1].slice(1, -1)));
-  if (out.length === 0) problems.push('RunRecord.java: no ERROR_* failure code constants found');
+  const declarations = [...code.matchAll(/\bString\s+(ERROR_\w+)\s*=/g)];
+  const out = [];
+  for (const m of declarations) {
+    const { parts, stopped } = splitTopLevel(code.slice(m.index + m[0].length), ',', ';');
+    const value = stopped ? stringExpr(parts[0].trim()) : null;
+    if (value === null) problems.push(`RunRecord.java: ${m[1]} is not initialized with string literals: ${parts[0].trim().slice(0, 60)}`);
+    else out.push(value);
+  }
+  if (declarations.length === 0) problems.push('RunRecord.java: no ERROR_* failure code constants found');
   return [...new Set(out)].sort();
 }
 

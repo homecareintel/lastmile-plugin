@@ -6,7 +6,7 @@ import { tmpdir } from 'node:os';
 import { basename, dirname, join } from 'node:path';
 import { fileURLToPath } from 'node:url';
 
-import { PATHS, dirReader, main, snapshot } from '../scripts/drift/snapshot.mjs';
+import { PATHS, dirReader, main, prodCommit, snapshot } from '../scripts/drift/snapshot.mjs';
 
 const ROOT = fileURLToPath(new URL('..', import.meta.url));
 const FIXTURES = join(ROOT, 'tests/fixtures/drift');
@@ -184,6 +184,68 @@ test('a missing source file is a parse failure', () => {
 test('hints or names that are not literals are parse failures', () => {
   assertParseFailure({ [tool('DeliveryTools')]: rep('.hints(false, true, false, true)', '.hints(false, DESTRUCTIVE, false, true)') }, /deliver_run.*hints/);
   assertParseFailure({ [tool('DeliveryTools')]: rep('ToolDef.builder("deliver_run"', 'ToolDef.builder(DELIVER') }, /DeliveryTools.*not a string literal/);
+});
+
+test('a failure code built from concatenated literals is read, not dropped', () => {
+  const r = compare({
+    [PATHS.runRecord]: rep('    public static final String OTHER', '    public static final String ERROR_TIMEOUT = "TIMED" + "_OUT";\n    public static final String OTHER'),
+  });
+  assert.equal(r.code, 1, r.err);
+  assert.match(line(r.out, '`TIMED_OUT`'), /[Rr]un failure codes: added/);
+});
+
+test('a failure code whose initializer is not string literals is a parse failure', () => {
+  assertParseFailure({
+    [PATHS.runRecord]: rep('    public static final String OTHER', '    public static final String ERROR_TIMEOUT = PREFIX + "TIMEOUT";\n    public static final String OTHER'),
+  }, /ERROR_TIMEOUT.*not initialized with string literals/);
+});
+
+/** A stand-in for `gh api` over deployments `[{ id, sha, created_at, state, job }]`; job null means no readable job. */
+function deploymentsApi(deployments) {
+  const repo = 'example/service';
+  const routes = new Map([[`repos/${repo}/deployments?environment=prod&per_page=100`, deployments.map(({ id, sha, created_at }) => ({ id, sha, created_at }))]]);
+  for (const d of deployments) {
+    const jobId = d.id * 10;
+    routes.set(`repos/${repo}/deployments/${d.id}/statuses?per_page=1`, [{ state: d.state, log_url: `/${repo}/actions/runs/${d.id}/job/${jobId}` }]);
+    if (d.job !== null) routes.set(`repos/${repo}/actions/jobs/${jobId}`, { id: jobId, name: d.job });
+  }
+  const calls = [];
+  const api = (args) => {
+    calls.push(args.at(-1));
+    return routes.has(args.at(-1)) ? JSON.stringify(routes.get(args.at(-1))) : null;
+  };
+  return { repo, api, calls };
+}
+
+const MCP_JOB = 'Deploy / Apply mcp (prod)';
+const OTHER_JOB = 'Deploy / Apply lambda (prod)';
+
+test('the prod commit skips a newer successful deployment of another app and a failed MCP one', () => {
+  const { repo, api } = deploymentsApi([
+    { id: 1, sha: 'aaa111', created_at: '2026-01-01T00:00:00Z', state: 'success', job: MCP_JOB },
+    { id: 2, sha: 'bbb222', created_at: '2026-01-03T00:00:00Z', state: 'failure', job: MCP_JOB },
+    { id: 3, sha: 'bbb222', created_at: '2026-01-02T00:00:00Z', state: 'success', job: OTHER_JOB },
+  ]);
+  assert.equal(prodCommit(repo, api), 'aaa111');
+});
+
+test('the prod commit is the newest successful MCP deployment', () => {
+  const { repo, api, calls } = deploymentsApi([
+    { id: 1, sha: 'aaa111', created_at: '2026-01-01T00:00:00Z', state: 'success', job: MCP_JOB },
+    { id: 2, sha: 'ccc333', created_at: '2026-01-04T00:00:00Z', state: 'success', job: MCP_JOB },
+  ]);
+  assert.equal(prodCommit(repo, api), 'ccc333');
+  assert.ok(!calls.some((c) => c.includes('deployments/1/')), 'stops at the first match');
+});
+
+test('no successful MCP deployment, or one whose job cannot be read, is an error rather than a guess', () => {
+  const none = deploymentsApi([{ id: 1, sha: 'aaa111', created_at: '2026-01-01T00:00:00Z', state: 'success', job: OTHER_JOB }]);
+  assert.throws(() => prodCommit(none.repo, none.api), /no successful MCP server deployment/);
+  const unreadable = deploymentsApi([
+    { id: 1, sha: 'aaa111', created_at: '2026-01-01T00:00:00Z', state: 'success', job: MCP_JOB },
+    { id: 2, sha: 'bbb222', created_at: '2026-01-02T00:00:00Z', state: 'success', job: null },
+  ]);
+  assert.throws(() => prodCommit(unreadable.repo, unreadable.api), /deployment 2 .*not readable/);
 });
 
 test('the CLI writes a baseline from a source directory, then reports no drift against it', () => {
