@@ -161,6 +161,28 @@ test("a clientSecret key in .mcp.json fails", () => {
 	assertFailure(failures, ".mcp.json", "secret");
 });
 
+test("credential fields in the .mcp.json server fail as mcp-server, naming the field", () => {
+	const cases = [
+		[(server) => (server.headers = { Authorization: "x" }), ["headers", "headers.Authorization"]],
+		[(server) => (server.oauth.accessToken = "x"), ["oauth.accessToken"]],
+		[(server) => (server.oauth.password = "x"), ["oauth.password"]],
+	];
+	for (const [mutate, keys] of cases) {
+		const failures = check((files) => mutate(files[".mcp.json"].mcpServers["route-optimization"]));
+		assert.deepEqual(
+			failures.filter((f) => f.file === ".mcp.json").map((f) => f.rule),
+			keys.map(() => "mcp-server"),
+			`only the credential-field rule should catch ${keys.join(", ")}; got ${JSON.stringify(failures)}`,
+		);
+		for (const key of keys) {
+			assert.ok(
+				failures.some((f) => f.rule === "mcp-server" && f.detail.endsWith(`credential field: ${key}`)),
+				`no mcp-server failure names ${key}: ${JSON.stringify(failures)}`,
+			);
+		}
+	}
+});
+
 test("every secret pattern fails in any tracked file", () => {
 	const samples = {
 		"Mapbox token": join("pk", ".eyJ1IjoiZmFrZSJ9"),
