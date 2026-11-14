@@ -1,0 +1,500 @@
+{
+  "source": {
+    "repo": "homecareintel/routeoptimization-agent",
+    "commit": "4f54bd880d49d7121be569f05222a44c027938bf"
+  },
+  "tools": [
+    {
+      "name": "apply_mapping",
+      "title": "Apply a column mapping",
+      "hints": {
+        "readOnly": false,
+        "destructive": false,
+        "idempotent": true,
+        "openWorld": true
+      },
+      "args": [
+        "dataset_id",
+        "mapping"
+      ],
+      "required": [
+        "dataset_id",
+        "mapping"
+      ]
+    },
+    {
+      "name": "compare_runs",
+      "title": "Compare two runs",
+      "hints": {
+        "readOnly": true,
+        "destructive": false,
+        "idempotent": true,
+        "openWorld": false
+      },
+      "args": [
+        "run_a",
+        "run_b"
+      ],
+      "required": [
+        "run_a",
+        "run_b"
+      ]
+    },
+    {
+      "name": "compile_problem",
+      "title": "Compile a problem",
+      "hints": {
+        "readOnly": false,
+        "destructive": false,
+        "idempotent": false,
+        "openWorld": true
+      },
+      "args": [
+        "dataset_id",
+        "depots_dataset_id",
+        "max_iterations",
+        "mode",
+        "time_budget_seconds",
+        "vehicle_types_dataset_id",
+        "workers_dataset_id"
+      ],
+      "required": [
+        "dataset_id"
+      ]
+    },
+    {
+      "name": "deliver_run",
+      "title": "Deliver a run to the customer",
+      "hints": {
+        "readOnly": false,
+        "destructive": true,
+        "idempotent": false,
+        "openWorld": true
+      },
+      "args": [
+        "result_id",
+        "run_id"
+      ],
+      "required": [
+        "run_id"
+      ]
+    },
+    {
+      "name": "describe_dataset",
+      "title": "Describe a dataset",
+      "hints": {
+        "readOnly": true,
+        "destructive": false,
+        "idempotent": true,
+        "openWorld": false
+      },
+      "args": [
+        "dataset_id"
+      ],
+      "required": [
+        "dataset_id"
+      ]
+    },
+    {
+      "name": "describe_rules",
+      "title": "Describe profile rules",
+      "hints": {
+        "readOnly": true,
+        "destructive": false,
+        "idempotent": true,
+        "openWorld": false
+      },
+      "args": [
+        "mode",
+        "type"
+      ],
+      "required": [
+        "mode"
+      ]
+    },
+    {
+      "name": "describe_settings",
+      "title": "Describe solver settings",
+      "hints": {
+        "readOnly": true,
+        "destructive": false,
+        "idempotent": true,
+        "openWorld": false
+      },
+      "args": [
+        "detail",
+        "format",
+        "mode",
+        "offset",
+        "paths",
+        "status",
+        "text",
+        "topic"
+      ],
+      "required": [
+        "mode"
+      ]
+    },
+    {
+      "name": "explain_run",
+      "title": "Explain a run",
+      "hints": {
+        "readOnly": true,
+        "destructive": false,
+        "idempotent": true,
+        "openWorld": false
+      },
+      "args": [
+        "assignment_limit",
+        "assignment_offset",
+        "focus",
+        "run_id",
+        "unassigned_limit",
+        "unassigned_offset"
+      ],
+      "required": [
+        "run_id"
+      ]
+    },
+    {
+      "name": "get_domain_checklist",
+      "title": "Get a domain checklist",
+      "hints": {
+        "readOnly": true,
+        "destructive": false,
+        "idempotent": true,
+        "openWorld": false
+      },
+      "args": [
+        "domain"
+      ],
+      "required": [
+        "domain"
+      ]
+    },
+    {
+      "name": "get_profile",
+      "title": "Get the business profile",
+      "hints": {
+        "readOnly": true,
+        "destructive": false,
+        "idempotent": true,
+        "openWorld": false
+      },
+      "args": [
+        "mode"
+      ],
+      "required": []
+    },
+    {
+      "name": "get_run",
+      "title": "Get a run",
+      "hints": {
+        "readOnly": true,
+        "destructive": false,
+        "idempotent": true,
+        "openWorld": false
+      },
+      "args": [
+        "routes_limit",
+        "routes_offset",
+        "run_id"
+      ],
+      "required": [
+        "run_id"
+      ]
+    },
+    {
+      "name": "import_data",
+      "title": "Import customer data",
+      "hints": {
+        "readOnly": false,
+        "destructive": false,
+        "idempotent": false,
+        "openWorld": true
+      },
+      "args": [
+        "entity",
+        "mode",
+        "ref",
+        "source"
+      ],
+      "required": [
+        "ref",
+        "source"
+      ]
+    },
+    {
+      "name": "list_datasets",
+      "title": "List datasets",
+      "hints": {
+        "readOnly": true,
+        "destructive": false,
+        "idempotent": true,
+        "openWorld": false
+      },
+      "args": [
+        "cursor",
+        "limit"
+      ],
+      "required": []
+    },
+    {
+      "name": "list_runs",
+      "title": "List runs",
+      "hints": {
+        "readOnly": true,
+        "destructive": false,
+        "idempotent": true,
+        "openWorld": false
+      },
+      "args": [
+        "cursor",
+        "kind",
+        "limit",
+        "status"
+      ],
+      "required": []
+    },
+    {
+      "name": "pilot_metrics",
+      "title": "Pilot go/no-go metrics",
+      "hints": {
+        "readOnly": true,
+        "destructive": false,
+        "idempotent": true,
+        "openWorld": false
+      },
+      "args": [
+        "since",
+        "until",
+        "zone"
+      ],
+      "required": []
+    },
+    {
+      "name": "preview_rules",
+      "title": "Preview draft rules",
+      "hints": {
+        "readOnly": false,
+        "destructive": false,
+        "idempotent": false,
+        "openWorld": false
+      },
+      "args": [
+        "dataset_id",
+        "depots_dataset_id",
+        "mode",
+        "preview_id",
+        "routes_limit",
+        "routes_offset",
+        "rules",
+        "vehicle_types_dataset_id",
+        "workers_dataset_id"
+      ],
+      "required": []
+    },
+    {
+      "name": "profile_history",
+      "title": "Get the profile change history",
+      "hints": {
+        "readOnly": true,
+        "destructive": false,
+        "idempotent": true,
+        "openWorld": false
+      },
+      "args": [
+        "limit"
+      ],
+      "required": []
+    },
+    {
+      "name": "propose_profile_change",
+      "title": "Propose a profile change",
+      "hints": {
+        "readOnly": false,
+        "destructive": false,
+        "idempotent": false,
+        "openWorld": false
+      },
+      "args": [
+        "dataset_id",
+        "mode",
+        "narrative",
+        "preview_id",
+        "reason",
+        "rules",
+        "workers_dataset_id"
+      ],
+      "required": [
+        "reason",
+        "rules"
+      ]
+    },
+    {
+      "name": "record_feedback",
+      "title": "Record feedback on an explanation",
+      "hints": {
+        "readOnly": false,
+        "destructive": false,
+        "idempotent": false,
+        "openWorld": false
+      },
+      "args": [
+        "accepted",
+        "judge",
+        "note",
+        "reason",
+        "run_id"
+      ],
+      "required": [
+        "accepted",
+        "run_id"
+      ]
+    },
+    {
+      "name": "solve",
+      "title": "Solve a problem",
+      "hints": {
+        "readOnly": false,
+        "destructive": false,
+        "idempotent": false,
+        "openWorld": false
+      },
+      "args": [
+        "explain",
+        "problem_id"
+      ],
+      "required": [
+        "problem_id"
+      ]
+    },
+    {
+      "name": "why_not",
+      "title": "Ask why a job is not on a vehicle",
+      "hints": {
+        "readOnly": false,
+        "destructive": false,
+        "idempotent": false,
+        "openWorld": false
+      },
+      "args": [
+        "iterations",
+        "job_id",
+        "run_id",
+        "vehicle_id"
+      ],
+      "required": [
+        "job_id",
+        "run_id",
+        "vehicle_id"
+      ]
+    }
+  ],
+  "prompts": [
+    "domain-checklist-field-service",
+    "domain-checklist-fuel-delivery",
+    "domain-checklist-home-health"
+  ],
+  "errorCodes": [
+    "BASE_RUN_NOT_COMPLETE",
+    "BODY_TOO_LARGE",
+    "COMBINE_KINDS",
+    "COMBINE_NOT_APPLICABLE",
+    "CONFLICT",
+    "CSV_MALFORMED",
+    "DATASET_INCOMPLETE",
+    "DATASET_NEEDS_BOTH",
+    "DATASET_NOT_FOUND",
+    "DATASET_NOT_MAPPED",
+    "DELIVERY_NOT_CONFIGURED",
+    "GEOCODER_UNAVAILABLE",
+    "HASH_MISMATCH",
+    "IDEMPOTENCY_KEY_IN_FLIGHT",
+    "IDEMPOTENCY_KEY_MISSING",
+    "IDEMPOTENCY_KEY_REUSED",
+    "INTEGRITY",
+    "INTERNAL_ERROR",
+    "INVALID_ARGUMENT",
+    "INVALID_DATASET_ID",
+    "INVALID_ID",
+    "INVALID_RESULT_ID",
+    "INVALID_TENANT",
+    "ITERATIONS_OUT_OF_RANGE",
+    "JOB_KIND_NOT_IN_MODE",
+    "JSON_INVALID",
+    "JSON_NOT_A_REQUEST",
+    "LOCATION_SPEND_CAP",
+    "LOCATION_WITHOUT_COORDINATES",
+    "MAPPING_INVALID",
+    "MAPPING_NOT_APPLICABLE",
+    "MODE_INVALID",
+    "MODE_MISMATCH",
+    "NOT_FOUND",
+    "NOT_PENDING",
+    "PREVIEW_DOES_NOT_MATCH_PROPOSAL",
+    "PROBLEM_HAS_ERRORS",
+    "PROBLEM_TOO_LARGE",
+    "PROFILE_NOT_APPROVED",
+    "QUOTA_EXCEEDED",
+    "REF_INVALID",
+    "REF_MISSING",
+    "REF_NOT_ALLOWED",
+    "REF_TYPE_MISMATCH",
+    "REF_URL_REJECTED",
+    "RUN_ARTIFACT_MISSING",
+    "RUN_NOT_COMPLETE",
+    "RUN_NOT_DELIVERABLE",
+    "SETTINGS_NOT_ACCEPTED",
+    "SHEETS_ERROR",
+    "SHEETS_NOT_CONFIGURED",
+    "SHEET_NOT_REGISTERED",
+    "SHEET_UNAVAILABLE",
+    "SOURCE_EMPTY",
+    "SOURCE_NOT_FOUND",
+    "SOURCE_TOO_LARGE",
+    "SOURCE_UNAVAILABLE",
+    "TIME_BUDGET_OUT_OF_RANGE",
+    "TOO_MANY_COLUMNS",
+    "TOO_MANY_ROWS",
+    "UNAUTHENTICATED",
+    "UNKNOWN_TOOL",
+    "UNMATCHED_ATTRIBUTE_VALUE",
+    "WORKER_WITHOUT_LOCATION"
+  ],
+  "statuses": {
+    "runStatuses": [
+      "COMPLETE",
+      "FAILED",
+      "QUEUED",
+      "RUNNING"
+    ],
+    "proposalStatuses": [
+      "APPROVED",
+      "PENDING",
+      "REJECTED",
+      "SUPERSEDED"
+    ],
+    "compileProfileStates": [
+      "APPROVED",
+      "DEFAULT_V0"
+    ],
+    "runFailureCodes": [
+      "ORPHANED",
+      "SHUTDOWN"
+    ]
+  },
+  "checklistDomains": [
+    "field-service",
+    "fuel-delivery",
+    "home-health"
+  ],
+  "contentHashes": {
+    "checklists": {
+      "field-service.md": "sha256:99e491f0b9222a89b71ca8753eb1187aedd5dd423852b606eb790920cbf1e551",
+      "fuel-delivery.md": "sha256:0b3efeef7b142938709e354b4f348d2f83ab1e73fc7f829bb4501a02a24da3d2",
+      "home-health.md": "sha256:8f35f0c787d88b8d4db7da2f5b1e4b4e5beeab1138659f077adc3b8f6b7b262d"
+    },
+    "serverInstructions": "sha256:b518fb725492ee7b5b1e64d17b2c7e49b5bf2a3d08abeb09b2e20a4acc164199"
+  }
+}
