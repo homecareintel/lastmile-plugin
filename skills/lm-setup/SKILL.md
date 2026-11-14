@@ -12,7 +12,10 @@ again on a healthy install just reports again.
 This skill is read-only. It never calls `import_data`, `apply_mapping`,
 `propose_profile_change`, `preview_rules`, `compile_problem`, `solve`,
 `why_not`, `deliver_run` or `record_feedback`, even if the operator asks for a
-quick demo. Hand those requests to lm-onboard, lm-rule or lm-optimization.
+quick demo. A setup run leaves nothing written. When the request also asks for
+a demo, an import, a rule change or a solve, finish the report, name the skill
+that does it (lm-onboard, lm-rule or lm-optimization), and stop. Do not start
+that skill in the same run; the operator starts it.
 
 ## Step 1: check the server state on the host
 
