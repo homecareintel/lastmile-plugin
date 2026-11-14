@@ -32,6 +32,15 @@ public: it is committed to this repo's `.mcp.json` under
 **OAuth flow.** Authorization code only. No implicit grant, no client
 credentials. Identity provider: the Cognito user pool.
 
+**Direct authentication flows.** Set the client's explicit auth flows to
+refresh-token auth only (`ALLOW_REFRESH_TOKEN_AUTH`). Leave out SRP,
+password, custom and choice-based user auth. Those flows let anyone who
+holds the public client id sign in through Cognito's API instead of the
+managed login page, and the access tokens they issue always carry the
+`aws.cognito.signin.user.admin` scope, whatever the allowed scopes say. If
+managed login turns out to need another flow, tell the plugin maintainer
+before adding it.
+
 **Callback URLs.** Allow exactly these three loopback URLs:
 
 | URL | Used by |
@@ -70,6 +79,10 @@ so an empty list is as unsafe as including the tenant attribute.
 
 Either gap, the admin scope or a writable tenant attribute, would let an
 operator move their own account into another tenant.
+
+**No self sign-up.** Confirm the pool allows only administrators to create
+users. The client id is public, so a pool that allows self sign-up would let
+anyone create an account through this client.
 
 **Managed login branding.** The pool uses Cognito's newer managed login
 pages, which need a branding style assigned to each app client. Create a
