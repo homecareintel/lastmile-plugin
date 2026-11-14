@@ -5,8 +5,9 @@ These cases run the six skills against mock stand-ins for the
 case checks one rule a skill edit could quietly break: setup stays
 read-only, a rule is never reported live before approval, an
 inexpressible rule is recorded as unsupported, delivery needs its own
-explicit yes, an account with no tenant gets the invite-only answer, and
-explanations come only from solver output.
+explicit yes, an account with no tenant gets the invite-only answer,
+explanations come only from solver output, and an instruction inside a
+tool result is never followed.
 
 Run the suite from the repo root:
 
