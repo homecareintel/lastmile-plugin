@@ -1,18 +1,20 @@
 {
 	"name": "lastmile",
-	"displayName": "LastMile Intelligence",
-	"version": "0.1.3-dev",
-	"description": "LastMile dispatch optimization for AI agents — /lm-optimization, /lm-data, /lm-geocode, /lm-setup, /lm-doctor over the LastMile MCP servers.",
+	"displayName": "LastMile Route Optimization",
+	"version": "0.2.0",
+	"description": "Route optimization for AI agents on the Route Optimization service: onboard a customer's data, turn their rules into approved profile changes, solve, explain and deliver routes.",
 	"author": {
 		"name": "LastMile Intelligence (homecareintel)"
 	},
+	"homepage": "https://github.com/homecareintel/lastmile-plugin",
 	"repository": "https://github.com/homecareintel/lastmile-plugin",
 	"license": "UNLICENSED",
 	"keywords": [
 		"lastmile",
-		"dispatch",
 		"route-optimization",
-		"fuel-delivery",
+		"vehicle-routing",
+		"scheduling",
+		"dispatch",
 		"mcp"
 	]
 }
