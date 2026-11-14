@@ -38,7 +38,7 @@ Exit codes:
    1. Create a branch from `main` named `drift/<first 7 characters of the service commit>`. The commit is in the report's first line.
    2. Run `npm run drift -- --write` to refresh the baseline.
    3. Edit the skills listed under "Skills to review" so they match the service. Read the changed parts of the service source with `gh` to see what each change means. For a new tool that no skill mentions, add it where an operator would need it, or say in the PR why no skill needs it yet.
-   4. Run `npm test`, `npm run check` and `claude plugin eval . --no-publish`. Fix what fails. If something still fails and the cause is not in the skills, open the PR as a draft and say what fails.
+   4. Run `npm test`, `npm run check` and `claude plugin eval . --ablation none --no-publish` (see `evals/README.md`). Fix what fails. If something still fails and the cause is not in the skills, open the PR as a draft and say what fails.
    5. Run `npm run drift` again and confirm it exits `0`.
    6. Commit the baseline and the skill edits, push the branch, and open a PR to `main`. The PR body is the report from step 2, followed by a short list of the skill edits and the check results.
    7. If a drift PR from an earlier week is still open, close it with a comment that links the new one.

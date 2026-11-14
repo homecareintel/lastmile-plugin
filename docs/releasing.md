@@ -17,7 +17,7 @@ Run these on the commit you are about to tag. All must pass.
 npm test
 npm run check
 claude plugin validate --strict .
-claude plugin eval . --no-publish
+claude plugin eval . --ablation none --no-publish
 ```
 
 The validator may still warn about the missing icon and privacy policy URL.

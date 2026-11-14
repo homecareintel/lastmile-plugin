@@ -1,0 +1,495 @@
+{
+ "tools": [
+  {
+   "name": "apply_mapping",
+   "title": "Apply a column mapping",
+   "description": "Apply a column mapping.",
+   "inputSchema": {
+    "type": "object",
+    "properties": {
+     "dataset_id": {},
+     "mapping": {}
+    },
+    "required": [
+     "dataset_id",
+     "mapping"
+    ]
+   },
+   "annotations": {
+    "title": "Apply a column mapping",
+    "readOnlyHint": false,
+    "destructiveHint": false,
+    "idempotentHint": true,
+    "openWorldHint": true
+   }
+  },
+  {
+   "name": "compare_runs",
+   "title": "Compare two runs",
+   "description": "Compare two runs.",
+   "inputSchema": {
+    "type": "object",
+    "properties": {
+     "run_a": {},
+     "run_b": {}
+    },
+    "required": [
+     "run_a",
+     "run_b"
+    ]
+   },
+   "annotations": {
+    "title": "Compare two runs",
+    "readOnlyHint": true,
+    "destructiveHint": false,
+    "idempotentHint": true,
+    "openWorldHint": false
+   }
+  },
+  {
+   "name": "compile_problem",
+   "title": "Compile a problem",
+   "description": "Compile a problem.",
+   "inputSchema": {
+    "type": "object",
+    "properties": {
+     "dataset_id": {},
+     "depots_dataset_id": {},
+     "max_iterations": {},
+     "mode": {},
+     "time_budget_seconds": {},
+     "vehicle_types_dataset_id": {},
+     "workers_dataset_id": {}
+    },
+    "required": [
+     "dataset_id"
+    ]
+   },
+   "annotations": {
+    "title": "Compile a problem",
+    "readOnlyHint": false,
+    "destructiveHint": false,
+    "idempotentHint": false,
+    "openWorldHint": true
+   }
+  },
+  {
+   "name": "deliver_run",
+   "title": "Deliver a run to the customer",
+   "description": "Deliver a run to the customer.",
+   "inputSchema": {
+    "type": "object",
+    "properties": {
+     "result_id": {},
+     "run_id": {}
+    },
+    "required": [
+     "run_id"
+    ]
+   },
+   "annotations": {
+    "title": "Deliver a run to the customer",
+    "readOnlyHint": false,
+    "destructiveHint": true,
+    "idempotentHint": false,
+    "openWorldHint": true
+   }
+  },
+  {
+   "name": "describe_dataset",
+   "title": "Describe a dataset",
+   "description": "Describe a dataset.",
+   "inputSchema": {
+    "type": "object",
+    "properties": {
+     "dataset_id": {}
+    },
+    "required": [
+     "dataset_id"
+    ]
+   },
+   "annotations": {
+    "title": "Describe a dataset",
+    "readOnlyHint": true,
+    "destructiveHint": false,
+    "idempotentHint": true,
+    "openWorldHint": false
+   }
+  },
+  {
+   "name": "describe_rules",
+   "title": "Describe profile rules",
+   "description": "Describe profile rules.",
+   "inputSchema": {
+    "type": "object",
+    "properties": {
+     "mode": {},
+     "type": {}
+    },
+    "required": [
+     "mode"
+    ]
+   },
+   "annotations": {
+    "title": "Describe profile rules",
+    "readOnlyHint": true,
+    "destructiveHint": false,
+    "idempotentHint": true,
+    "openWorldHint": false
+   }
+  },
+  {
+   "name": "describe_settings",
+   "title": "Describe solver settings",
+   "description": "Describe solver settings.",
+   "inputSchema": {
+    "type": "object",
+    "properties": {
+     "detail": {},
+     "format": {},
+     "mode": {},
+     "offset": {},
+     "paths": {},
+     "status": {},
+     "text": {},
+     "topic": {}
+    },
+    "required": [
+     "mode"
+    ]
+   },
+   "annotations": {
+    "title": "Describe solver settings",
+    "readOnlyHint": true,
+    "destructiveHint": false,
+    "idempotentHint": true,
+    "openWorldHint": false
+   }
+  },
+  {
+   "name": "explain_run",
+   "title": "Explain a run",
+   "description": "Explain a run.",
+   "inputSchema": {
+    "type": "object",
+    "properties": {
+     "assignment_limit": {},
+     "assignment_offset": {},
+     "focus": {},
+     "run_id": {},
+     "unassigned_limit": {},
+     "unassigned_offset": {}
+    },
+    "required": [
+     "run_id"
+    ]
+   },
+   "annotations": {
+    "title": "Explain a run",
+    "readOnlyHint": true,
+    "destructiveHint": false,
+    "idempotentHint": true,
+    "openWorldHint": false
+   }
+  },
+  {
+   "name": "get_domain_checklist",
+   "title": "Get a domain checklist",
+   "description": "Get a domain checklist.",
+   "inputSchema": {
+    "type": "object",
+    "properties": {
+     "domain": {}
+    },
+    "required": [
+     "domain"
+    ]
+   },
+   "annotations": {
+    "title": "Get a domain checklist",
+    "readOnlyHint": true,
+    "destructiveHint": false,
+    "idempotentHint": true,
+    "openWorldHint": false
+   }
+  },
+  {
+   "name": "get_profile",
+   "title": "Get the business profile",
+   "description": "Get the business profile.",
+   "inputSchema": {
+    "type": "object",
+    "properties": {
+     "mode": {}
+    },
+    "required": []
+   },
+   "annotations": {
+    "title": "Get the business profile",
+    "readOnlyHint": true,
+    "destructiveHint": false,
+    "idempotentHint": true,
+    "openWorldHint": false
+   }
+  },
+  {
+   "name": "get_run",
+   "title": "Get a run",
+   "description": "Get a run.",
+   "inputSchema": {
+    "type": "object",
+    "properties": {
+     "routes_limit": {},
+     "routes_offset": {},
+     "run_id": {}
+    },
+    "required": [
+     "run_id"
+    ]
+   },
+   "annotations": {
+    "title": "Get a run",
+    "readOnlyHint": true,
+    "destructiveHint": false,
+    "idempotentHint": true,
+    "openWorldHint": false
+   }
+  },
+  {
+   "name": "import_data",
+   "title": "Import customer data",
+   "description": "Import customer data.",
+   "inputSchema": {
+    "type": "object",
+    "properties": {
+     "entity": {},
+     "mode": {},
+     "ref": {},
+     "source": {}
+    },
+    "required": [
+     "ref",
+     "source"
+    ]
+   },
+   "annotations": {
+    "title": "Import customer data",
+    "readOnlyHint": false,
+    "destructiveHint": false,
+    "idempotentHint": false,
+    "openWorldHint": true
+   }
+  },
+  {
+   "name": "list_datasets",
+   "title": "List datasets",
+   "description": "List datasets.",
+   "inputSchema": {
+    "type": "object",
+    "properties": {
+     "cursor": {},
+     "limit": {}
+    },
+    "required": []
+   },
+   "annotations": {
+    "title": "List datasets",
+    "readOnlyHint": true,
+    "destructiveHint": false,
+    "idempotentHint": true,
+    "openWorldHint": false
+   }
+  },
+  {
+   "name": "list_runs",
+   "title": "List runs",
+   "description": "List runs.",
+   "inputSchema": {
+    "type": "object",
+    "properties": {
+     "cursor": {},
+     "kind": {},
+     "limit": {},
+     "status": {}
+    },
+    "required": []
+   },
+   "annotations": {
+    "title": "List runs",
+    "readOnlyHint": true,
+    "destructiveHint": false,
+    "idempotentHint": true,
+    "openWorldHint": false
+   }
+  },
+  {
+   "name": "pilot_metrics",
+   "title": "Pilot go/no-go metrics",
+   "description": "Pilot go/no-go metrics.",
+   "inputSchema": {
+    "type": "object",
+    "properties": {
+     "since": {},
+     "until": {},
+     "zone": {}
+    },
+    "required": []
+   },
+   "annotations": {
+    "title": "Pilot go/no-go metrics",
+    "readOnlyHint": true,
+    "destructiveHint": false,
+    "idempotentHint": true,
+    "openWorldHint": false
+   }
+  },
+  {
+   "name": "preview_rules",
+   "title": "Preview draft rules",
+   "description": "Preview draft rules.",
+   "inputSchema": {
+    "type": "object",
+    "properties": {
+     "dataset_id": {},
+     "depots_dataset_id": {},
+     "mode": {},
+     "preview_id": {},
+     "routes_limit": {},
+     "routes_offset": {},
+     "rules": {},
+     "vehicle_types_dataset_id": {},
+     "workers_dataset_id": {}
+    },
+    "required": []
+   },
+   "annotations": {
+    "title": "Preview draft rules",
+    "readOnlyHint": false,
+    "destructiveHint": false,
+    "idempotentHint": false,
+    "openWorldHint": false
+   }
+  },
+  {
+   "name": "profile_history",
+   "title": "Get the profile change history",
+   "description": "Get the profile change history.",
+   "inputSchema": {
+    "type": "object",
+    "properties": {
+     "limit": {}
+    },
+    "required": []
+   },
+   "annotations": {
+    "title": "Get the profile change history",
+    "readOnlyHint": true,
+    "destructiveHint": false,
+    "idempotentHint": true,
+    "openWorldHint": false
+   }
+  },
+  {
+   "name": "propose_profile_change",
+   "title": "Propose a profile change",
+   "description": "Propose a profile change.",
+   "inputSchema": {
+    "type": "object",
+    "properties": {
+     "dataset_id": {},
+     "mode": {},
+     "narrative": {},
+     "preview_id": {},
+     "reason": {},
+     "rules": {},
+     "workers_dataset_id": {}
+    },
+    "required": [
+     "reason",
+     "rules"
+    ]
+   },
+   "annotations": {
+    "title": "Propose a profile change",
+    "readOnlyHint": false,
+    "destructiveHint": false,
+    "idempotentHint": false,
+    "openWorldHint": false
+   }
+  },
+  {
+   "name": "record_feedback",
+   "title": "Record feedback on an explanation",
+   "description": "Record feedback on an explanation.",
+   "inputSchema": {
+    "type": "object",
+    "properties": {
+     "accepted": {},
+     "judge": {},
+     "note": {},
+     "reason": {},
+     "run_id": {}
+    },
+    "required": [
+     "accepted",
+     "run_id"
+    ]
+   },
+   "annotations": {
+    "title": "Record feedback on an explanation",
+    "readOnlyHint": false,
+    "destructiveHint": false,
+    "idempotentHint": false,
+    "openWorldHint": false
+   }
+  },
+  {
+   "name": "solve",
+   "title": "Solve a problem",
+   "description": "Solve a problem.",
+   "inputSchema": {
+    "type": "object",
+    "properties": {
+     "explain": {},
+     "problem_id": {}
+    },
+    "required": [
+     "problem_id"
+    ]
+   },
+   "annotations": {
+    "title": "Solve a problem",
+    "readOnlyHint": false,
+    "destructiveHint": false,
+    "idempotentHint": false,
+    "openWorldHint": false
+   }
+  },
+  {
+   "name": "why_not",
+   "title": "Ask why a job is not on a vehicle",
+   "description": "Ask why a job is not on a vehicle.",
+   "inputSchema": {
+    "type": "object",
+    "properties": {
+     "iterations": {},
+     "job_id": {},
+     "run_id": {},
+     "vehicle_id": {}
+    },
+    "required": [
+     "job_id",
+     "run_id",
+     "vehicle_id"
+    ]
+   },
+   "annotations": {
+    "title": "Ask why a job is not on a vehicle",
+    "readOnlyHint": false,
+    "destructiveHint": false,
+    "idempotentHint": false,
+    "openWorldHint": false
+   }
+  }
+ ]
+}
