@@ -79,7 +79,7 @@ function writeTree(files) {
 	for (const [rel, content] of Object.entries(files)) {
 		const full = path.join(root, rel);
 		mkdirSync(path.dirname(full), { recursive: true });
-		writeFileSync(full, typeof content === "string" ? content : json(content));
+		writeFileSync(full, typeof content === "string" || Buffer.isBuffer(content) ? content : json(content));
 	}
 	return root;
 }
@@ -166,6 +166,8 @@ test("credential fields in the .mcp.json server fail as mcp-server, naming the f
 		[(server) => (server.headers = { Authorization: "x" }), ["headers", "headers.Authorization"]],
 		[(server) => (server.oauth.accessToken = "x"), ["oauth.accessToken"]],
 		[(server) => (server.oauth.password = "x"), ["oauth.password"]],
+		[(server) => (server.oauth.apiKey = "x"), ["oauth.apiKey"]],
+		[(server) => (server.oauth.bearer = "x"), ["oauth.bearer"]],
 	];
 	for (const [mutate, keys] of cases) {
 		const failures = check((files) => mutate(files[".mcp.json"].mcpServers["route-optimization"]));
@@ -184,23 +186,45 @@ test("credential fields in the .mcp.json server fail as mcp-server, naming the f
 });
 
 test("every secret pattern fails in any tracked file", () => {
-	const samples = {
-		"Mapbox token": join("pk", ".eyJ1IjoiZmFrZSJ9"),
-		"secret key": join("sk", "_", "FAKEFAKEFAKE"),
-		"OAuth access token": join("oat", "_", "FAKEFAKEFAKE"),
-		"AWS access key": join("AKIA", "FAKEFAKEFAKEFAKE"),
-		JWT: join("eyJ", "a".repeat(20), ".", "b".repeat(20), ".", "c".repeat(10)),
-		"GitHub fine-grained token": join("github", "_pat_", "x".repeat(22)),
-		"private key block": join("-----BEGIN ", "RSA PRIVATE KEY-----"),
-		"client_secret key": join("CLIENT", "_SECRET", "=abc"),
-	};
-	for (const [label, sample] of Object.entries(samples)) {
+	// Keyed by the pattern name each sample must trip, so a dropped pattern fails here even when another still matches.
+	const samples = [
+		["Mapbox token", join("pk", ".eyJ1IjoiZmFrZSJ9")],
+		["secret key", join("sk", "_", "FAKEFAKEFAKE")],
+		["API key", join("sk", "-proj-", "F".repeat(24))],
+		["API key", join("sk", "-ant-", "F".repeat(24))],
+		["restricted key", join("rk", "_live_", "FAKEFAKEFAKE")],
+		["Slack token", join("xox", "b-", "1234567890-FAKE")],
+		["Google API key", join("AI", "za", "F".repeat(35))],
+		["OAuth access token", join("oat", "_", "FAKEFAKEFAKE")],
+		["AWS access key", join("AKIA", "FAKEFAKEFAKEFAKE")],
+		["JWT", join("eyJ", "a".repeat(20), ".", "b".repeat(20), ".", "c".repeat(10))],
+		["GitHub token", join("github", "_pat_", "x".repeat(22))],
+		["GitHub token", join("ghr", "_", "x".repeat(36))],
+		["private key block", join("-----BEGIN ", "RSA PRIVATE KEY-----")],
+		["client secret key", join("CLIENT", "_SECRET", "=abc")],
+	];
+	for (const [name, sample] of samples) {
 		const failures = check((files) => {
 			files["scripts/sample.mjs"] = `// ${sample}\n`;
 		});
 		assert.ok(
-			failures.some((f) => f.file === "scripts/sample.mjs" && f.rule === "secret"),
-			`${label} was not flagged: ${JSON.stringify(failures)}`,
+			failures.some((f) => f.file === "scripts/sample.mjs" && f.rule === "secret" && f.detail.startsWith(`${name} at`)),
+			`${name} was not flagged for ${sample.slice(0, 6)}...: ${JSON.stringify(failures)}`,
+		);
+	}
+});
+
+test("a secret in a UTF-16 or binary tracked file still fails", () => {
+	const token = join("ghp", "_", "x".repeat(36));
+	const utf16 = Buffer.concat([Buffer.from([0xff, 0xfe]), Buffer.from(`token ${token}\n`, "utf16le")]);
+	const binary = Buffer.concat([Buffer.from([0x89, 0x50, 0x4e, 0x47, 0x00, 0x00]), Buffer.from(token), Buffer.from([0x00, 0x01])]);
+	for (const [rel, content] of [["docs/notes.txt", utf16], ["assets/icon.png", binary]]) {
+		const failures = check((files) => {
+			files[rel] = content;
+		});
+		assert.ok(
+			failures.some((f) => f.file === rel && f.rule === "secret" && f.detail.startsWith("GitHub token at")),
+			`${rel} was not flagged: ${JSON.stringify(failures)}`,
 		);
 	}
 });

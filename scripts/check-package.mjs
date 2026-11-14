@@ -39,10 +39,14 @@ const BARE_HOST_TLDS = new Set(["com", "net", "org", "io", "ai", "dev", "cloud",
 const SECRET_PATTERNS = [
 	{ name: "Mapbox token", pattern: /pk\.eyJ[\w-]+/ },
 	{ name: "secret key", pattern: /\bsk_[A-Za-z0-9]{8,}/ },
+	{ name: "API key", pattern: /\bsk-[A-Za-z0-9_-]{20,}/ },
+	{ name: "restricted key", pattern: /\brk_(?:live|test)_[A-Za-z0-9]{8,}/ },
+	{ name: "Slack token", pattern: /\bxox[abprs]-[A-Za-z0-9-]{10,}/ },
+	{ name: "Google API key", pattern: /\bAIza[0-9A-Za-z_-]{35}/ },
 	{ name: "OAuth access token", pattern: /\boat_[A-Za-z0-9]{8,}/ },
 	{ name: "AWS access key", pattern: /\bAKIA[0-9A-Z]{16}\b/ },
 	{ name: "JWT", pattern: /\beyJ[\w-]{20,}\.[\w-]{20,}\.[\w-]{10,}/ },
-	{ name: "GitHub token", pattern: /\b(?:ghp|gho|ghs|ghu)_[A-Za-z0-9]{20,}|\bgithub_pat_[A-Za-z0-9_]{20,}/ },
+	{ name: "GitHub token", pattern: /\b(?:ghp|gho|ghs|ghu|ghr)_[A-Za-z0-9]{20,}|\bgithub_pat_[A-Za-z0-9_]{20,}/ },
 	{ name: "private key block", pattern: /-----BEGIN [A-Z0-9 ]*PRIVATE KEY-----/ },
 	{ name: "client secret key", pattern: /["']?\bclient_?secret["']?\s*[:=]/i },
 ];
@@ -114,11 +118,26 @@ function listFiles(root) {
 
 const lineOf = (text, index) => text.slice(0, index).split("\n").length;
 
-function scanText(rel, text, fail) {
+function scanSecrets(rel, text, fail) {
 	for (const { name, pattern } of SECRET_PATTERNS) {
 		const match = pattern.exec(text);
 		if (match) fail(rel, "secret", `${name} at line ${lineOf(text, match.index)}`);
 	}
+}
+
+// Text a file with NUL bytes can still carry: UTF-16 text decoded whole, or the printable runs of a binary.
+function textOfBinary(buffer) {
+	if (buffer[0] === 0xff && buffer[1] === 0xfe) return { text: buffer.subarray(2).toString("utf16le"), whole: true };
+	if (buffer[0] === 0xfe && buffer[1] === 0xff) {
+		const swapped = Buffer.from(buffer.subarray(2));
+		swapped.swap16();
+		return { text: swapped.toString("utf16le"), whole: true };
+	}
+	return { text: (buffer.toString("latin1").match(/[\x20-\x7e]{8,}/g) ?? []).join("\n"), whole: false };
+}
+
+function scanText(rel, text, fail) {
+	scanSecrets(rel, text, fail);
 	const notice = GENERATED_NOTICE.exec(text);
 	if (notice) fail(rel, "generated-notice", `generated-file notice at line ${lineOf(text, notice.index)}`);
 
@@ -164,7 +183,7 @@ const isPlainObject = (value) => value !== null && typeof value === "object" && 
 function secretKeys(value, prefix = "") {
 	if (!isPlainObject(value)) return [];
 	return Object.entries(value).flatMap(([key, child]) => [
-		...(/secret|password|token|^authorization$|^headers$/i.test(key) ? [`${prefix}${key}`] : []),
+		...(/secret|password|token|credential|bearer|api_?key|^authorization$|^headers$/i.test(key) ? [`${prefix}${key}`] : []),
 		...secretKeys(child, `${prefix}${key}.`),
 	]);
 }
@@ -293,9 +312,14 @@ export function checkPackage(root = process.cwd()) {
 		const full = path.join(root, rel);
 		if (!existsSync(full) || !statSync(full).isFile()) continue;
 		const buffer = readFileSync(full);
-		if (buffer.includes(0)) continue; // binary
 		scanned += 1;
-		scanText(rel, buffer.toString("utf8"), fail);
+		if (!buffer.includes(0)) {
+			scanText(rel, buffer.toString("utf8"), fail);
+			continue;
+		}
+		const { text, whole } = textOfBinary(buffer);
+		if (whole) scanText(rel, text, fail);
+		else scanSecrets(rel, text, fail);
 	}
 	return { failures, scanned };
 }
